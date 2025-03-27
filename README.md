@@ -1,2 +1,2 @@
 # hyperlocal
-Community engagement platform
+Open source community engagement platform
