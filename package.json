@@ -1,0 +1,51 @@
+{
+  "name": "hyperlocal-web",
+  "description": "Open source community engagement platform",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "keystone:dev": "keystone dev",
+    "keystone:start": "keystone start",
+    "keystone:build": "keystone build --no-ui && keystone prisma migrate deploy",
+    "next:dev": "next dev -p 7777",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"api,web\" -c \"green,blue\" \"pnpm keystone:dev\" \"pnpm next:dev\"",
+    "build": "pnpm keystone:build && pnpm next:build",
+    "start": "next start -p $PORT",
+    "lint": "next lint",
+    "postinstall": "keystone postinstall",
+    "db:seed": "tsx ./seed-data/index.ts"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@keystone-6/auth": "^8.1.0",
+    "@keystone-6/cloudinary": "^8.0.0",
+    "@keystone-6/core": "^6.3.1",
+    "@keystone-6/document-renderer": "^1.1.2",
+    "@keystone-6/fields-document": "^9.1.1",
+    "@prisma/client": "5.22.0",
+    "cloudinary": "^2.5.1",
+    "dotenv": "^16.4.7",
+    "graphql": "^16.8.1",
+    "graphql-upload": "^15.0.2",
+    "iron-session": "^8.0.4",
+    "mime": "^4.0.6",
+    "next": "15.1.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.7",
+    "postcss": "^8",
+    "prisma": "5.22.0",
+    "sass": "^1.85.0",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5"
+  }
+}

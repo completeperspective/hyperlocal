@@ -1,0 +1,10 @@
+.TextInput {
+  @apply px-3 py-2 w-full rounded-md;
+  @apply text-sm border border-stroke bg-surface shadow-sm;
+  @apply transition duration-300;
+  @apply placeholder:text-gray-500;
+  @apply focus:outline-none focus:border-primary focus:shadow;
+  @apply hover:border-gray-400;
+  @apply dark:bg-surface-dark dark:border-stroke-dark dark:shadow-none;
+  @apply dark:focus:border-primary-dark dark:focus:shadow-none;
+}
