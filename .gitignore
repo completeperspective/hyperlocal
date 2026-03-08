@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# KeystoneJS
+.keystone/
+
+# Misc IDE
+.vscode/
+.idea/
+.DS_Store

@@ -3,23 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "clean": "./scripts/clean.sh",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"data,app\" -c \"green,blue\" \"pnpm keystone:dev\" \"pnpm next:dev\"",
+    "db:generate": "keystone prisma generate",
+    "db:studio": "keystone prisma studio",
+    "keystone:init": "keystone build --no-ui && pnpm db:generate",
+    "keystone:dev": "keystone dev",
+    "lint": "eslint",
+    "next:dev": "next dev -p 7777",
+    "next:build": "next build",
+    "next:start": "next start",
+    "postinstall": "pnpm keystone:init"
   },
   "dependencies": {
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "@keystone-6/auth": "^8.1.0",
+    "@keystone-6/core": "^6.5.1",
+    "@prisma/client": "5.22.0",
+    "dotenv": "^17.3.1",
+    "next": "15.1.11",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "concurrently": "^9.2.1",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "15.1.11",
+    "prisma": "5.22.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
