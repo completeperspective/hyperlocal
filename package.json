@@ -23,6 +23,7 @@
     "validate": "pnpm lint && pnpm format:check && pnpm type-check"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
     "@keystone-6/auth": "^8.1.0",
     "@keystone-6/core": "^6.5.1",
     "@prisma/client": "5.22.0",
@@ -47,6 +48,7 @@
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "prisma": "5.22.0",
+    "sass": "^1.97.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

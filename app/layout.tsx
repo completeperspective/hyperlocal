@@ -1,15 +1,18 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
+import { Lobster, Open_Sans } from 'next/font/google'
+import './styles/globals.scss'
+import { GlobalLayout } from '@/layouts/global-layout'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const openSans = Open_Sans({
   subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-open-sans',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const lobster = Lobster({
   subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-lobster',
 })
 
 export const metadata: Metadata = {
@@ -24,10 +27,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${openSans.variable} ${lobster.variable} antialiased`}>
+        <GlobalLayout>{children}</GlobalLayout>
       </body>
     </html>
   )

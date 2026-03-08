@@ -1,0 +1,43 @@
+/**
+
+  Dynamic App Theme
+
+  Note: Dark mode is toggeled based on the users system preferences,
+  :root variables are overwritten when switching light and dark mode
+
+**/
+
+/* Color Palette */
+@theme {
+  --foreground: #1b1b1c;
+  --background: #f2f4f7;
+  --primary: #ff0069;
+  --primary-foreground: #ffffff;
+}
+
+/* Tailwind Config */
+@theme inline {
+  --color-foreground: var(--foreground, #f2f4f7);
+  --color-background: var(--background, #1b1b1c);
+  --color-primary: var(--primary, #ff0069);
+  --color-primary-foreground: var(--primary-foreground, #ffffff);
+}
+
+@layer theme {
+  :root,
+  :host {
+    @variant dark {
+      --foreground: #f2f4f7;
+      --background: #1b1b1c;
+    }
+  }
+}
+
+/* DOM Selectors */
+@layer base {
+  html,
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+}

@@ -12,7 +12,7 @@
     "prettier-plugin-tailwindcss",
     "@ianvs/prettier-plugin-sort-imports"
   ],
-  "tailwindStylesheet": "./app/globals.css",
+  "tailwindStylesheet": "./app/styles/globals.scss",
   "importOrder": [
     "^dotenv",
     "^(react/(.*)$)|^(react$)",

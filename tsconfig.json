@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/layouts": ["./lib/components/layouts"],
+      "@/layouts/*": ["./lib/components/layouts/*"]
     }
   },
   "include": [

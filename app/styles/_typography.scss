@@ -1,0 +1,56 @@
+/* Tailwind Config */
+@theme inline {
+  --font-open-sans: var(--font-open-sans);
+  --font-lobster: var(--font-lobster);
+  --font-primary: var(--font-primary, var(--font-lobster));
+  --font-secondary: var(--font-secondary, var(--font-open-sans));
+}
+
+/* Base typography rules */
+@layer base {
+  html,
+  body {
+    @apply font-secondary text-base;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-primary;
+  }
+
+  h4,
+  h5,
+  h6 {
+    @apply font-secondary font-semibold;
+  }
+
+  h1 {
+    @apply text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
+  h4 {
+    @apply text-xl;
+  }
+
+  h5 {
+    @apply text-lg;
+  }
+
+  h6 {
+    @apply text-base;
+  }
+
+  p,
+  span {
+    @apply font-secondary;
+  }
+}
