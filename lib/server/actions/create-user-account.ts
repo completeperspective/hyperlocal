@@ -51,7 +51,7 @@ export async function createUserAccount(
     if (newUser?.createUser) {
       // Prepare json data for nextjs client
       const data = JSON.parse(JSON.stringify(newUser?.createUser))
-      console.log('SHiP aCCouNT: ', data)
+
       return data
     }
 

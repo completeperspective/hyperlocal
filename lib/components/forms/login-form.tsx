@@ -3,13 +3,13 @@
 import { useActionState, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-react'
+import { AlertCircleIcon } from 'lucide-react'
 import { authenticateUserWithPassword } from '@/actions/authenticate-user-with-password'
-import { Alert, AlertDescription, AlertTitle } from '@/ui/alert'
+import { Alert, AlertDescription } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
 
-export function LoginForm() {
+export function LoginForm({ returnTo = '/' }: { returnTo?: string }) {
   const router = useRouter()
   const [formState, loginAction] = useActionState(
     authenticateUserWithPassword,
@@ -19,34 +19,23 @@ export function LoginForm() {
   )
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showAlert, setShowAlert] = useState<boolean | null>(null)
 
   useEffect(() => {
-    if (formState?.message || formState?.sessionToken) {
-      setShowAlert(true)
+    if (formState?.sessionToken) {
+      //window.location.href = returnTo
+      router.push(returnTo)
     }
-  }, [formState])
+  }, [formState, returnTo, router])
 
   return (
-    <section className="w-sm">
+    <section className="w-full">
       <div className="mb-4">
-        {showAlert && (
+        {formState?.message && (
           <>
-            {formState?.message && (
-              <Alert variant="destructive" className="mb-8">
-                <AlertCircleIcon />
-                <AlertDescription>{formState.message}</AlertDescription>
-              </Alert>
-            )}
-            {formState?.sessionToken && (
-              <Alert className="text-positive mb-8">
-                <CheckCircle2Icon />
-
-                <AlertTitle>
-                  Success! The server issued a secure auth token!
-                </AlertTitle>
-              </Alert>
-            )}
+            <Alert variant="destructive" className="mb-8">
+              <AlertCircleIcon />
+              <AlertDescription>{formState.message}</AlertDescription>
+            </Alert>
           </>
         )}
       </div>

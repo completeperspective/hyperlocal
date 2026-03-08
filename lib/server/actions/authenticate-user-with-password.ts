@@ -44,7 +44,7 @@ export async function authenticateUserWithPassword(
       const data = JSON.parse(
         JSON.stringify({ ...session?.authenticateUserWithPassword }),
       )
-      console.log('send account: ', data)
+
       return data
     }
 
