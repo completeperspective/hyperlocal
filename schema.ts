@@ -1,6 +1,6 @@
-import { list } from "@keystone-6/core";
-import { allowAll } from "@keystone-6/core/access";
-import { text, password, checkbox } from "@keystone-6/core/fields";
+import { list } from '@keystone-6/core'
+import { allowAll } from '@keystone-6/core/access'
+import { checkbox, password, text } from '@keystone-6/core/fields'
 
 export const lists = {
   // TODO: learn more about access control
@@ -8,9 +8,9 @@ export const lists = {
     access: allowAll,
     fields: {
       name: text({ validation: { isRequired: true } }),
-      email: text({ validation: { isRequired: true }, isIndexed: "unique" }),
+      email: text({ validation: { isRequired: true }, isIndexed: 'unique' }),
       recoveryPhrase: password(),
       isAdmin: checkbox(),
     },
   }),
-};
+}

@@ -3,17 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "pnpm keystone:build && pnpm next:build",
     "clean": "./scripts/clean.sh",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"data,app\" -c \"green,blue\" \"pnpm keystone:dev\" \"pnpm next:dev\"",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"data,web\" -c \"green,blue\" \"pnpm keystone:dev\" \"pnpm next:dev\"",
     "db:generate": "keystone prisma generate",
     "db:studio": "keystone prisma studio",
-    "keystone:init": "keystone build --no-ui && pnpm db:generate",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "keystone:build": "keystone build --no-ui",
     "keystone:dev": "keystone dev",
+    "keystone:init": "keystone build --no-ui && pnpm db:generate",
     "lint": "eslint",
     "next:dev": "next dev -p 7777",
-    "next:build": "next build",
-    "next:start": "next start",
-    "postinstall": "pnpm keystone:init"
+    "next:build": "NODE_ENV=production next build",
+    "next:start": "NODE_ENV=production next start",
+    "postinstall": "pnpm keystone:init",
+    "prepare": "husky",
+    "type-check": "tsc --noEmit --incremental false",
+    "validate": "pnpm lint && pnpm format:check && pnpm type-check"
   },
   "dependencies": {
     "@keystone-6/auth": "^8.1.0",
@@ -25,15 +32,33 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.11",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "prisma": "5.22.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": "^22"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --quiet --fix"
+    ],
+    "*.{js,jsx,ts,tsx,json,css,scss,md,mjs,html}": [
+      "prettier --write --ignore-unknown"
+    ]
   }
 }
