@@ -18,3 +18,38 @@ model User {
   recoveryPhrase String?
   isAdmin        Boolean @default(false)
 }
+
+model Settings {
+  id                 Int     @id
+  siteName           String  @default("")
+  baseUrl            String  @default("")
+  metaTitle          String  @default("")
+  metaDescription    String  @default("")
+  ogImage_id         String?
+  ogImage_filesize   Int?
+  ogImage_width      Int?
+  ogImage_height     Int?
+  ogImage_extension  String?
+  robots             String? @default("noindex, nofollow, noarchive, nosnippet")
+  isPrivate          Boolean @default(true)
+  allowSignup        Boolean @default(false)
+  maintenanceMode    Boolean @default(false)
+  maintenanceMessage String  @default("We'll be back shortly.")
+  gaTrackingId       String  @default("")
+  socialLinks        Json?
+  theme              Theme?  @relation("Settings_theme", fields: [themeId], references: [id])
+  themeId            String? @map("theme")
+
+  @@index([themeId])
+}
+
+model Theme {
+  id                  String     @id @default(cuid())
+  name                String     @default("")
+  lightMode           Json?      @default("{\"card\":\"oklch(1 0 0)\",\"info\":\"oklch(0.70 0.15 240)\",\"ring\":\"oklch(0.708 0 0)\",\"input\":\"oklch(0.922 0 0)\",\"meta1\":\"oklch(0.646 0.222 41.116)\",\"meta2\":\"oklch(0.6 0.118 184.704)\",\"meta3\":\"oklch(0.398 0.07 227.392)\",\"meta4\":\"oklch(0.828 0.189 84.429)\",\"meta5\":\"oklch(0.769 0.188 70.08)\",\"muted\":\"oklch(0.97 0 0)\",\"accent\":\"oklch(0.7407 0.131 349.73)\",\"border\":\"oklch(0.922 0 0)\",\"popover\":\"oklch(1 0 0)\",\"primary\":\"oklch(0.6558 0.2557 359.13)\",\"sidebar\":\"oklch(0.985 0 0)\",\"warning\":\"oklch(75% 0.183 55.934)\",\"positive\":\"oklch(0.6868 0.1816 142.18)\",\"secondary\":\"oklch(0.4487 0.1742 358.82)\",\"background\":\"oklch(0.9665 0.0045 258.32)\",\"foreground\":\"oklch(0.2225 0.0019 286.24)\",\"destructive\":\"oklch(0.577 0.245 27.325)\",\"sidebarRing\":\"oklch(0.708 0 0)\",\"sidebarAccent\":\"oklch(0.97 0 0)\",\"sidebarBorder\":\"oklch(0.922 0 0)\",\"cardForeground\":\"oklch(0.2225 0.0019 286.24)\",\"infoForeground\":\"oklch(0.2225 0.0019 286.24)\",\"sidebarPrimary\":\"oklch(0.205 0 0)\",\"mutedForeground\":\"oklch(0.556 0 0)\",\"accentForeground\":\"oklch(0.2661 0.093 354.64)\",\"popoverForeground\":\"oklch(0.2225 0.0019 286.24)\",\"primaryForeground\":\"oklch(1 0 0)\",\"sidebarForeground\":\"oklch(0.2225 0.0019 286.24)\",\"warningForeground\":\"oklch(0.28 0.07 46)\",\"positiveForeground\":\"oklch(0.9665 0.0045 258.32)\",\"secondaryForeground\":\"oklch(1 0 0)\",\"destructiveForeground\":\"oklch(1 0 0)\",\"sidebarAccentForeground\":\"oklch(0.205 0 0)\",\"sidebarPrimaryForeground\":\"oklch(0.985 0 0)\"}")
+  darkMode            Json?      @default("{\"card\":\"oklch(0.2545 0.0035 228.93)\",\"info\":\"oklch(0.70 0.15 240)\",\"ring\":\"oklch(0.556 0 0)\",\"input\":\"oklch(1 0 0 / 15%)\",\"meta1\":\"oklch(0.488 0.243 264.376)\",\"meta2\":\"oklch(0.696 0.17 162.48)\",\"meta3\":\"oklch(0.769 0.188 70.08)\",\"meta4\":\"oklch(0.627 0.265 303.9)\",\"meta5\":\"oklch(0.645 0.246 16.439)\",\"muted\":\"oklch(0.2545 0.0035 228.93)\",\"accent\":\"oklch(0.7407 0.131 349.73)\",\"border\":\"oklch(1 0 0 / 10%)\",\"popover\":\"oklch(0.2545 0.0035 228.93)\",\"primary\":\"oklch(0.5844 0.228 8.91)\",\"sidebar\":\"oklch(0.2545 0.0035 228.93)\",\"warning\":\"oklch(75% 0.183 55.934)\",\"positive\":\"oklch(0.6868 0.1816 142.18)\",\"secondary\":\"oklch(0.3589 0.082 11.05)\",\"background\":\"oklch(0.2225 0.0019 286.24)\",\"foreground\":\"oklch(0.9665 0.0045 258.32)\",\"destructive\":\"oklch(0.704 0.191 22.216)\",\"sidebarRing\":\"oklch(0.439 0 0)\",\"sidebarAccent\":\"oklch(0.269 0 0)\",\"sidebarBorder\":\"oklch(1 0 0 / 10%)\",\"cardForeground\":\"oklch(0.9665 0.0045 258.32)\",\"infoForeground\":\"oklch(0.9665 0.0045 258.32)\",\"sidebarPrimary\":\"oklch(0.488 0.243 264.376)\",\"mutedForeground\":\"oklch(0.556 0 0)\",\"accentForeground\":\"oklch(0.2661 0.093 354.64)\",\"popoverForeground\":\"oklch(0.9665 0.0045 258.32)\",\"primaryForeground\":\"oklch(1 0 0)\",\"sidebarForeground\":\"oklch(0.9665 0.0045 258.32)\",\"warningForeground\":\"oklch(0.99 0.02 95)\",\"positiveForeground\":\"oklch(0.9665 0.0045 258.32)\",\"secondaryForeground\":\"oklch(1 0 0)\",\"destructiveForeground\":\"oklch(0.9665 0.0045 258.32)\",\"sidebarAccentForeground\":\"oklch(0.985 0 0)\",\"sidebarPrimaryForeground\":\"oklch(0.985 0 0)\"}")
+  radius              String     @default("0.625rem")
+  fontPrimary         String     @default("'Lobster', sans-serif")
+  fontSecondary       String     @default("'Open Sans', sans-serif")
+  from_Settings_theme Settings[] @relation("Settings_theme")
+}

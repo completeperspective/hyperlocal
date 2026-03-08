@@ -9,7 +9,13 @@ import { Alert, AlertDescription } from '@/ui/alert'
 import { Button } from '@/ui/button'
 import { Input } from '@/ui/input'
 
-export function LoginForm({ returnTo = '/' }: { returnTo?: string }) {
+export function LoginForm({
+  returnTo = '/',
+  showSignup,
+}: {
+  returnTo?: string
+  showSignup: boolean
+}) {
   const router = useRouter()
   const [formState, loginAction] = useActionState(
     authenticateUserWithPassword,
@@ -66,15 +72,17 @@ export function LoginForm({ returnTo = '/' }: { returnTo?: string }) {
             Login
           </Button>
 
-          <p className="flex justify-center">
-            Need an account?{' '}
-            <Link
-              href="/signup"
-              className="ml-2 text-primary dark:text-primary-dark"
-            >
-              Sign up
-            </Link>
-          </p>
+          {showSignup && (
+            <p className="flex justify-center">
+              Need an account?{' '}
+              <Link
+                href="/signup"
+                className="ml-2 text-primary dark:text-primary-dark"
+              >
+                Sign up
+              </Link>
+            </p>
+          )}
         </div>
       </form>
     </section>

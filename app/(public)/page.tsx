@@ -1,11 +1,21 @@
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+import { isAuthenticated } from '@/server/auth'
+import { AppSettings } from '@/server/helpers/AppSettings'
+import { getMetadata } from '@/server/helpers/get-metadata'
 
-export const metadata: Metadata = {
-  title: 'Web App | Public Landing',
-  description: 'Nextjs web app with Keystonejs data engine',
+export async function generateMetadata(): Promise<Metadata> {
+  return await getMetadata('Home')
 }
 
-export default function PublicLanding() {
+export default async function PublicLanding() {
+  const settings = await AppSettings.instance.settings()
+  const isAuth = await isAuthenticated()
+
+  if (settings?.isPrivate && !isAuth) {
+    redirect('/login')
+  }
+
   return (
     <div className="gap-16 p-8 pb-20 sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">
       <main className="gap-4 sm:items-start row-start-2 flex flex-col items-center">

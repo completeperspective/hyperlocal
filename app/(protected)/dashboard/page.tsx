@@ -1,10 +1,9 @@
 import { Metadata } from 'next'
+import { getMetadata } from '@/server/helpers/get-metadata'
 
-export const metadata: Metadata = {
-  title: 'Web App | Private Dashboard',
-  description: 'Nextjs web app with Keystonejs data engine',
+export async function generateMetadata(): Promise<Metadata> {
+  return await getMetadata('Dashboard')
 }
-
 export default function Dashboard() {
   return (
     <div className="gap-16 p-8 pb-20 sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">

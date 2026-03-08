@@ -24,5 +24,14 @@ export default withAuth(
       isDisabled: false,
       isAccessAllowed: (context) => !!context?.session?.data?.isAdmin,
     },
+    storage: {
+      images: {
+        kind: 'local',
+        type: 'image',
+        storagePath: './public/images',
+        serverRoute: { path: '/images' },
+        generateUrl: (path) => `/images${path}`,
+      },
+    },
   }),
 )

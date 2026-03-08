@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
+import { getMetadata } from '@/server/helpers/get-metadata'
 
-export const metadata: Metadata = {
-  title: 'Web App | Admin',
-  description: 'Nextjs web app with Keystonejs data engine',
+export async function generateMetadata(): Promise<Metadata> {
+  return await getMetadata('Admin')
 }
 
 export default function AdminPage() {

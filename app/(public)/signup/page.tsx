@@ -1,12 +1,21 @@
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { CreateAccountForm } from '@/components/forms'
+import { AppSettings } from '@/server/helpers/AppSettings'
+import { getMetadata } from '@/server/helpers/get-metadata'
 
-export const metadata: Metadata = {
-  title: 'Web App | Sign Up',
-  description: 'Nextjs web app with Keystonejs data engine',
+export async function generateMetadata(): Promise<Metadata> {
+  return await getMetadata('Signup')
 }
 
-export default function SignUp() {
+export default async function SignUp() {
+  const appSettings = await AppSettings.instance.settings()
+
+  // invitation only, no public signups #boot2root
+  if (!appSettings?.allowSignup) {
+    redirect('/')
+  }
+
   return (
     <div className="gap-16 p-4 pb-20 sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">
       <main className="gap-4 sm:items-start row-start-2 flex flex-col items-center">
