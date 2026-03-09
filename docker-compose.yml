@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  app:
+    container_name: web-app
+    image: ghcr.io/completeperspective/web-app:latest
+    restart: unless-stopped
+    # For local development, you can uncomment the extra_hosts section to allow
+    # the app to connect to the database running on the host machine.
+    #extra_hosts:
+    #  - 'host.docker.internal:host-gateway'
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+
+      AUTH_SESSION_NAME: ${AUTH_SESSION_NAME}
+      AUTH_SESSION_SECRET: ${AUTH_SESSION_SECRET}
+      AUTH_SESSION_EXPIRES: ${AUTH_SESSION_EXPIRES}
+
+      CLOUDINARY_CLOUD: ${CLOUDINARY_CLOUD}
+      CLOUDINARY_APIKEY: ${CLOUDINARY_APIKEY}
+      CLOUDINARY_SECRET: ${CLOUDINARY_SECRET}
+      CLOUDINARY_PROJECT: ${CLOUDINARY_PROJECT}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

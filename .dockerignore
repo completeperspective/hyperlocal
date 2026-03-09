@@ -1,0 +1,65 @@
+# Dependencies (will be installed fresh in Docker)
+node_modules
+.pnpm-store
+
+# Build outputs (will be regenerated in Docker)
+.next
+.keystone
+out
+build
+
+# Version control
+.git
+.gitignore
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+__tests__
+coverage
+
+# Local environment files (secrets passed at runtime)
+.env
+.env.*
+!.env.example
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# AI/Claude files
+.claude
+.serena
+CLAUDE.md
+docs/ai
+
+# Documentation (not needed in production)
+docs/screenshots
+*.md
+!README.md
+
+# Seed data (not needed in production image)
+seed-data
+
+# Husky hooks
+.husky
+
+# TypeScript build info
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Docker files (prevent recursive issues)
+Dockerfile
+Dockerfile.*
+docker-compose*.yml
