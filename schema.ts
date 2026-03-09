@@ -8,7 +8,9 @@ import {
   relationship,
   select,
   text,
+  timestamp,
 } from '@keystone-6/core/fields'
+import { document } from '@keystone-6/fields-document'
 
 export const lists = {
   // TODO: learn more about access control
@@ -65,6 +67,15 @@ export const lists = {
 
       // Branding
       theme: relationship({ ref: 'Theme' }),
+
+      // Dynamic Landing page
+      homePage: relationship({
+        ref: 'Page',
+        label: 'Landing Page',
+        ui: {
+          description: 'Page to display at the apex/root url',
+        },
+      }),
     },
     graphql: { plural: 'ManySettings' },
   }),
@@ -173,6 +184,42 @@ export const lists = {
       }),
       fontSecondary: text({
         defaultValue: "'Open Sans', sans-serif",
+      }),
+    },
+  }),
+  Page: list({
+    access: allowAll,
+    fields: {
+      title: text(),
+      description: text(),
+      slug: text({
+        isIndexed: 'unique',
+        isFilterable: true,
+      }),
+      publishedAt: timestamp(),
+      status: select({
+        options: [
+          { label: 'Draft', value: 'draft' }, // Private - only visible to owners
+          { label: 'Private', value: 'private' }, // Requires authorization (ex: admin)
+          { label: 'Membership', value: 'membership' }, // Requires a authentication
+          { label: 'Published', value: 'published' }, // Publicly visible
+        ],
+        defaultValue: 'draft',
+        ui: { displayMode: 'segmented-control' },
+      }),
+      content: document({
+        formatting: true,
+        dividers: true,
+        links: true,
+        layouts: [
+          [2, 1],
+          [1, 2, 1],
+        ],
+      }),
+      trustedHtml: text({
+        ui: {
+          displayMode: 'textarea',
+        },
       }),
     },
   }),

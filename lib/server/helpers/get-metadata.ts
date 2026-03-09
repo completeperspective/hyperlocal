@@ -1,22 +1,32 @@
 import { Metadata } from 'next'
 import { isAuthenticated } from '@/server/auth'
+import { PageData } from '@/types'
 import { AppSettings } from './AppSettings'
 
-export async function getMetadata(page: string): Promise<Metadata> {
+export async function getPageMetadata(
+  page?: Partial<PageData> | string | null,
+): Promise<Metadata> {
   const settings = await AppSettings.instance.settings()
   const isAuth = await isAuthenticated()
 
   const isPrivate = settings?.isPrivate ?? true
   const isLocked = isPrivate && !isAuth
 
+  // Normalize: accept string (legacy/static) or PageData partial
+  const pageTitle = typeof page === 'string' ? page : page?.title
+  const pageDescription =
+    typeof page === 'string' ? undefined : page?.description
+  const pageSlug = typeof page === 'string' ? undefined : page?.slug
+
   // ─── Title ──────────────────────────────────────────────
-  const pageTitle = [settings?.siteName, page].filter(Boolean).join(' | ')
-  const title = isLocked ? 'Private' : pageTitle
+  const fullTitle = [settings?.siteName, pageTitle].filter(Boolean).join(' | ')
+  const title = isLocked ? 'Private' : fullTitle
 
   // ─── Description ────────────────────────────────────────
   const description = isLocked
     ? 'Please login to access content'
-    : (settings?.metaDescription ??
+    : (pageDescription ??
+      settings?.metaDescription ??
       'Built with Next.js, KeystoneJS, and GraphQL.')
 
   // ─── OG Image ───────────────────────────────────────────
@@ -26,15 +36,27 @@ export async function getMetadata(page: string): Promise<Metadata> {
           url: settings.ogImage.url,
           width: settings.ogImage.width ?? undefined,
           height: settings.ogImage.height ?? undefined,
-          alt: settings.siteName ?? page,
+          alt: settings?.siteName ?? pageTitle,
         },
       ]
     : undefined
 
   // ─── Canonical ──────────────────────────────────────────
-  const canonical = settings?.baseUrl
-    ? `${settings.baseUrl.replace(/\/$/, '')}/${page.toLowerCase().replace(/\s+/g, '-')}`
-    : undefined
+  const baseUrl =
+    settings?.baseUrl?.replace(/\/$/, '') ??
+    process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '') ??
+    'http://localhost:7777'
+
+  const canonicalPath = pageSlug
+    ? `/${pageSlug}`
+    : pageTitle
+      ? `/${pageTitle.toLowerCase().replace(/\s+/g, '-')}`
+      : undefined
+
+  const canonical =
+    baseUrl && canonicalPath
+      ? `${baseUrl}${canonicalPath === '/home' ? '' : canonicalPath}`
+      : undefined
 
   return {
     title,
@@ -42,13 +64,8 @@ export async function getMetadata(page: string): Promise<Metadata> {
 
     robots: settings?.robots ?? 'noindex, nofollow, noarchive, nosnippet',
 
-    metadataBase: new URL(
-      settings?.baseUrl ??
-        process.env.NEXT_PUBLIC_BASE_URL ??
-        'http://localhost:7777',
-    ),
+    metadataBase: new URL(baseUrl),
 
-    // Open Graph
     openGraph: isLocked
       ? undefined
       : {
@@ -59,7 +76,6 @@ export async function getMetadata(page: string): Promise<Metadata> {
           images: ogImages,
         },
 
-    // Twitter/X card
     twitter: isLocked
       ? undefined
       : {
@@ -69,10 +85,6 @@ export async function getMetadata(page: string): Promise<Metadata> {
           images: ogImages?.map((i) => i.url),
         },
 
-    // Canonical URL
     alternates: canonical ? { canonical } : undefined,
-
-    // Verification / analytics placeholder
-    // (gaTrackingId belongs in layout.tsx, not metadata)
   }
 }

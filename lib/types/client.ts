@@ -1,4 +1,4 @@
-import type { Settings } from '@prisma/client'
+import type { Page, Settings } from '@prisma/client'
 
 interface ThemeColors {
   background: string
@@ -50,4 +50,11 @@ export interface ClientSettings extends Settings {
     fontPrimary: string // font-family
     fontSecondary: string // font-family
   }
+  homePage: Page
+}
+
+export interface PageData extends Page {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any
+  trustedHtml: string
 }

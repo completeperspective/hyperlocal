@@ -2,10 +2,10 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { CreateAccountForm } from '@/components/forms'
 import { AppSettings } from '@/server/helpers/AppSettings'
-import { getMetadata } from '@/server/helpers/get-metadata'
+import { getPageMetadata } from '@/server/helpers/get-metadata'
 
 export async function generateMetadata(): Promise<Metadata> {
-  return await getMetadata('Signup')
+  return await getPageMetadata('Signup')
 }
 
 export default async function SignUp() {

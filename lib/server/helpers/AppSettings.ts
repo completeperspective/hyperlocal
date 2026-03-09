@@ -75,6 +75,10 @@ export class AppSettings {
             lightMode
             darkMode
         }
+
+        homePage {
+         slug
+        }
       `,
     })) as ClientSettings
   }

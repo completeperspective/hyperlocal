@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 import { LoginForm } from '@/components/forms/login-form'
 import { AppSettings } from '@/server/helpers/AppSettings'
-import { getMetadata } from '@/server/helpers/get-metadata'
+import { getPageMetadata } from '@/server/helpers/get-metadata'
 import type { PageProps } from '@/types'
 
 export async function generateMetadata(): Promise<Metadata> {
-  return await getMetadata('Login')
+  return await getPageMetadata('Login')
 }
 export default async function LoginPage({ searchParams }: PageProps) {
   const _s = await searchParams

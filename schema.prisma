@@ -39,8 +39,11 @@ model Settings {
   socialLinks        Json?
   theme              Theme?  @relation("Settings_theme", fields: [themeId], references: [id])
   themeId            String? @map("theme")
+  homePage           Page?   @relation("Settings_homePage", fields: [homePageId], references: [id])
+  homePageId         String? @map("homePage")
 
   @@index([themeId])
+  @@index([homePageId])
 }
 
 model Theme {
@@ -52,4 +55,16 @@ model Theme {
   fontPrimary         String     @default("'Lobster', sans-serif")
   fontSecondary       String     @default("'Open Sans', sans-serif")
   from_Settings_theme Settings[] @relation("Settings_theme")
+}
+
+model Page {
+  id                     String     @id @default(cuid())
+  title                  String     @default("")
+  description            String     @default("")
+  slug                   String     @unique @default("")
+  publishedAt            DateTime?
+  status                 String?    @default("draft")
+  content                Json       @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  trustedHtml            String     @default("")
+  from_Settings_homePage Settings[] @relation("Settings_homePage")
 }

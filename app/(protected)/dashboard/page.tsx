@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
-import { getMetadata } from '@/server/helpers/get-metadata'
+import { getPageMetadata } from '@/server/helpers/get-metadata'
 
 export async function generateMetadata(): Promise<Metadata> {
-  return await getMetadata('Dashboard')
+  return await getPageMetadata('Dashboard')
 }
 export default function Dashboard() {
   return (
