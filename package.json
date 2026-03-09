@@ -5,7 +5,7 @@
   "scripts": {
     "build": "pnpm keystone:build && pnpm next:build",
     "clean": "./scripts/clean.sh",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"data,web\" -c \"green,blue\" \"pnpm keystone:dev\" \"pnpm next:dev\"",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"data,app\" -c \"green,blue\" \"pnpm keystone:dev\" \"pnpm next:dev\"",
     "db:seed": "tsx ./seed-data/index.ts",
     "db:generate": "keystone prisma generate",
     "db:studio": "keystone prisma studio",
