@@ -6,7 +6,7 @@ export async function LandingPage() {
   const auth = await isAuthenticated()
   const appSettings = await AppSettings.instance.settings()
   return (
-    <main className="flex min-h-screen w-full flex-col justify-between p-8 sm:py-32 sm:px-16 bg-transparent">
+    <main className="flex min-h-[calc(100vh-65px)] w-full flex-col justify-between p-8 sm:py-32 sm:px-16 bg-transparent">
       <h2 className="mb-10 font-semibold leading-9">
         <span className="text-2xl font-primary text-gray-600 dark:text-zinc-300">
           {appSettings?.siteName}

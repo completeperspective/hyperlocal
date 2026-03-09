@@ -46,7 +46,7 @@ export default async function SlugPage({
   }
 
   return (
-    <main className="flex min-h-screen w-full flex-col p-8 sm:py-32 sm:px-16 bg-transparent">
+    <main className="flex min-h-[calc(100vh-65px)] w-full flex-col p-8 sm:py-32 sm:px-16 bg-transparent">
       <DynamicPage pageData={pageData} />
     </main>
   )

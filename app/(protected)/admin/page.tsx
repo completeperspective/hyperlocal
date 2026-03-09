@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AdminPage() {
   const appSettings = await AppSettings.instance.settings()
   return (
-    <div className="gap-16 p-8 pb-20 sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">
+    <div className="gap-16 p-8 pb-20 sm:p-20 grid min-h-[calc(100vh-65px)] grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">
       <main className="gap-4 sm:items-start row-start-2 flex flex-col items-center">
         <h1 className="text-primary dark:text-primary-dark text-4xl font-bold sm:text-left text-center">
           Admins Only

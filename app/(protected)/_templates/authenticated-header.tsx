@@ -1,25 +1,35 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { logout } from '@/actions/logout'
-import { Button } from '@/ui/button'
+import { SessionData } from '@/server/keystone/session'
+import AvatarMenu from '@/ui/avatar-menu'
 
-export const AuthenticatedHeader = () => {
+export const AuthenticatedHeader = ({
+  sessionData,
+}: {
+  sessionData: SessionData['data']
+}) => {
   const router = useRouter()
   const handleLogout = async () => {
-    await logout()
+    await fetch('/api/v1/auth/logout', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
     router.refresh()
   }
 
   return (
-    <header className="relative">
-      <Button
-        onClick={handleLogout}
-        variant="secondary"
-        className="!w-auto right-4 top-4 absolute"
-      >
-        Log Out
-      </Button>
+    <header className="relative h-[65px] w-full px-6 flex items-center justify-end">
+      <AvatarMenu
+        user={{
+          name: sessionData?.name || '',
+          email: sessionData?.email || '',
+          isAdmin: sessionData?.isAdmin || false,
+        }}
+        onLogout={handleLogout}
+      />
     </header>
   )
 }

@@ -34,7 +34,7 @@ export const settings = [
         publishedAt: '2025-04-20T00:00:00.000Z',
         status: 'published',
         trustedHtml: `
-        <main class="flex min-h-screen w-full flex-col justify-between p-8 sm:py-32 sm:px-16 bg-transparent">
+        <main class="flex min-h-[calc(100vh-65px)] w-full flex-col justify-between p-8 sm:py-32 sm:px-16 bg-transparent">
             <h2 class="mb-10 font-semibold leading-9">
                 <span class="text-2xl text-gray-600 dark:text-zinc-300">
                   hyper[<span class="text-primary">local</span>]

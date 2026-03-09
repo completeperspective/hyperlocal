@@ -17,7 +17,7 @@ export default async function SignUp() {
   }
 
   return (
-    <div className="gap-16 p-4 pb-20 sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">
+    <div className="gap-16 p-4 pb-20 sm:p-20 grid min-h-[calc(100vh-65px)] grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">
       <main className="gap-4 sm:items-start row-start-2 flex flex-col items-center">
         <h1>Create Acccount</h1>
         <CreateAccountForm />
