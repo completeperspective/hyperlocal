@@ -12,6 +12,35 @@ export const users = [
   },
 ]
 
+export const profiles = [
+  {
+    nickname: 'Admin',
+    owner: {
+      create: users[0],
+    },
+    description: 'Admin user',
+    location: 'Canada',
+    image: {
+      title: 'Admin',
+      source: './seed-data/assets/admin_profile.jpg',
+      altText: 'Admins profile image',
+    },
+  },
+  {
+    nickname: 'Bobby',
+    owner: {
+      create: users[1],
+    },
+    description: 'builder of things',
+    location: 'Canada',
+    image: {
+      title: 'Bobby',
+      source: './seed-data/assets/user_profile.jpg',
+      altText: 'Bobbys profile image',
+    },
+  },
+]
+
 export const settings = [
   {
     siteName: 'hyper[local]',

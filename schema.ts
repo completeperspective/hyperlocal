@@ -1,3 +1,4 @@
+import { cloudinaryImage } from '@keystone-6/cloudinary'
 import { list } from '@keystone-6/core'
 import { allowAll } from '@keystone-6/core/access'
 import {
@@ -11,6 +12,7 @@ import {
   timestamp,
 } from '@keystone-6/core/fields'
 import { document } from '@keystone-6/fields-document'
+import { cloudinaryConfig } from './cloudinary'
 
 export const lists = {
   // TODO: learn more about access control
@@ -21,6 +23,15 @@ export const lists = {
       email: text({ validation: { isRequired: true }, isIndexed: 'unique' }),
       recoveryPhrase: password(),
       isAdmin: checkbox(),
+      profile: relationship({
+        ref: 'Profile.owner',
+        ui: {
+          displayMode: 'cards',
+          cardFields: ['nickname', 'description', 'location'],
+          inlineConnect: true,
+          inlineCreate: { fields: ['nickname', 'description', 'location'] },
+        },
+      }),
     },
   }),
   Settings: list({
@@ -221,6 +232,32 @@ export const lists = {
           displayMode: 'textarea',
         },
       }),
+    },
+  }),
+  Profile: list({
+    access: allowAll,
+    fields: {
+      owner: relationship({
+        ref: 'User.profile',
+      }),
+      nickname: text(),
+      description: text(),
+      location: text({ defaultValue: 'Earth' }),
+      image: relationship({
+        ref: 'ProfileImage.profile',
+      }),
+    },
+  }),
+  ProfileImage: list({
+    access: allowAll,
+    fields: {
+      profile: relationship({ ref: 'Profile.image' }),
+      title: text(),
+      source: cloudinaryImage({
+        cloudinary: cloudinaryConfig,
+        label: 'Source',
+      }),
+      altText: text(),
     },
   }),
 }

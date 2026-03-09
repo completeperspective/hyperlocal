@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { isAuthenticated } from '@/server/auth'
-import { AppSettings } from '@/server/helpers'
 
 export default async function SignupLayout({
   children,

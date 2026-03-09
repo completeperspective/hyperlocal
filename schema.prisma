@@ -12,11 +12,12 @@ generator client {
 }
 
 model User {
-  id             String  @id @default(cuid())
-  name           String  @default("")
-  email          String  @unique @default("")
+  id             String   @id @default(cuid())
+  name           String   @default("")
+  email          String   @unique @default("")
   recoveryPhrase String?
-  isAdmin        Boolean @default(false)
+  isAdmin        Boolean  @default(false)
+  profile        Profile? @relation("Profile_owner")
 }
 
 model Settings {
@@ -68,4 +69,23 @@ model Page {
   content                Json       @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   trustedHtml            String     @default("")
   from_Settings_homePage Settings[] @relation("Settings_homePage")
+}
+
+model Profile {
+  id          String        @id @default(cuid())
+  owner       User?         @relation("Profile_owner", fields: [ownerId], references: [id])
+  ownerId     String?       @unique @map("owner")
+  nickname    String        @default("")
+  description String        @default("")
+  location    String        @default("Earth")
+  image       ProfileImage? @relation("Profile_image", fields: [imageId], references: [id])
+  imageId     String?       @unique @map("image")
+}
+
+model ProfileImage {
+  id      String   @id @default(cuid())
+  profile Profile? @relation("Profile_image")
+  title   String   @default("")
+  source  Json?
+  altText String   @default("")
 }

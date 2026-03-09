@@ -1,4 +1,4 @@
-import type { Page, Settings } from '@prisma/client'
+import type { Page, Profile, Settings } from '@prisma/client'
 
 interface ThemeColors {
   background: string
@@ -57,4 +57,12 @@ export interface PageData extends Page {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any
   trustedHtml: string
+}
+
+export interface ProfileData extends Profile {
+  image: {
+    source: {
+      publicUrl: string
+    }
+  }
 }

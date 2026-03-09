@@ -7,6 +7,7 @@ type User {
   email: String
   recoveryPhrase: PasswordState
   isAdmin: Boolean
+  profile: Profile
 }
 
 type PasswordState {
@@ -16,6 +17,7 @@ type PasswordState {
 input UserWhereUniqueInput {
   id: ID
   email: String
+  profile: ProfileWhereUniqueInput
 }
 
 input UserWhereInput {
@@ -27,6 +29,7 @@ input UserWhereInput {
   email: StringFilter
   recoveryPhrase: PasswordFilter
   isAdmin: BooleanFilter
+  profile: ProfileWhereInput
 }
 
 input IDFilter {
@@ -100,6 +103,13 @@ input UserUpdateInput {
   email: String
   recoveryPhrase: String
   isAdmin: Boolean
+  profile: ProfileRelateToOneForUpdateInput
+}
+
+input ProfileRelateToOneForUpdateInput {
+  create: ProfileCreateInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
 }
 
 input UserUpdateArgs {
@@ -112,6 +122,12 @@ input UserCreateInput {
   email: String
   recoveryPhrase: String
   isAdmin: Boolean
+  profile: ProfileRelateToOneForCreateInput
+}
+
+input ProfileRelateToOneForCreateInput {
+  create: ProfileCreateInput
+  connect: ProfileWhereUniqueInput
 }
 
 type Settings {
@@ -225,7 +241,9 @@ input ImageFieldInput {
   upload: Upload!
 }
 
-"""The `Upload` scalar type represents a file upload."""
+"""
+The `Upload` scalar type represents a file upload.
+"""
 scalar Upload
 
 input ThemeRelateToOneForUpdateInput {
@@ -241,7 +259,7 @@ input PageRelateToOneForUpdateInput {
 }
 
 input SettingsUpdateArgs {
-  where: SettingsWhereUniqueInput! = {id: 1}
+  where: SettingsWhereUniqueInput! = { id: 1 }
   data: SettingsUpdateInput!
 }
 
@@ -340,7 +358,8 @@ type Page {
   trustedHtml: String
 }
 
-scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 type Page_content_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
@@ -410,10 +429,187 @@ input PageCreateInput {
   trustedHtml: String
 }
 
+type Profile {
+  id: ID!
+  owner: User
+  nickname: String
+  description: String
+  location: String
+  image: ProfileImage
+}
+
+input ProfileWhereUniqueInput {
+  id: ID
+  owner: UserWhereUniqueInput
+  image: ProfileImageWhereUniqueInput
+}
+
+input ProfileWhereInput {
+  AND: [ProfileWhereInput!]
+  OR: [ProfileWhereInput!]
+  NOT: [ProfileWhereInput!]
+  id: IDFilter
+  owner: UserWhereInput
+  nickname: StringFilter
+  description: StringFilter
+  location: StringFilter
+  image: ProfileImageWhereInput
+}
+
+input ProfileOrderByInput {
+  id: OrderDirection
+  nickname: OrderDirection
+  description: OrderDirection
+  location: OrderDirection
+}
+
+input ProfileUpdateInput {
+  owner: UserRelateToOneForUpdateInput
+  nickname: String
+  description: String
+  location: String
+  image: ProfileImageRelateToOneForUpdateInput
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ProfileImageRelateToOneForUpdateInput {
+  create: ProfileImageCreateInput
+  connect: ProfileImageWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ProfileUpdateArgs {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateInput!
+}
+
+input ProfileCreateInput {
+  owner: UserRelateToOneForCreateInput
+  nickname: String
+  description: String
+  location: String
+  image: ProfileImageRelateToOneForCreateInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input ProfileImageRelateToOneForCreateInput {
+  create: ProfileImageCreateInput
+  connect: ProfileImageWhereUniqueInput
+}
+
+type ProfileImage {
+  id: ID!
+  profile: Profile
+  title: String
+  source: CloudinaryImage_File
+  altText: String
+}
+
+type CloudinaryImage_File {
+  id: ID
+  filename: String
+  originalFilename: String
+  mimetype: String
+  encoding: String
+  publicUrl: String
+  publicUrlTransformed(transformation: CloudinaryImageFormat): String
+}
+
+"""
+Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/documentation/image_transformation_reference).
+All options are strings as they ultimately end up in a URL.
+"""
+input CloudinaryImageFormat {
+  """
+  Rewrites the filename to be this pretty string. Do not include `/` or `.`
+  """
+  prettyName: String
+  width: String
+  height: String
+  crop: String
+  aspect_ratio: String
+  gravity: String
+  zoom: String
+  x: String
+  y: String
+  format: String
+  fetch_format: String
+  quality: String
+  radius: String
+  angle: String
+  effect: String
+  opacity: String
+  border: String
+  background: String
+  overlay: String
+  underlay: String
+  default_image: String
+  delay: String
+  color: String
+  color_space: String
+  dpr: String
+  page: String
+  density: String
+  flags: String
+  transformation: String
+}
+
+input ProfileImageWhereUniqueInput {
+  id: ID
+  profile: ProfileWhereUniqueInput
+}
+
+input ProfileImageWhereInput {
+  AND: [ProfileImageWhereInput!]
+  OR: [ProfileImageWhereInput!]
+  NOT: [ProfileImageWhereInput!]
+  id: IDFilter
+  profile: ProfileWhereInput
+  title: StringFilter
+  altText: StringFilter
+}
+
+input ProfileImageOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  altText: OrderDirection
+}
+
+input ProfileImageUpdateInput {
+  profile: ProfileRelateToOneForUpdateInput
+  title: String
+  source: Upload
+  altText: String
+}
+
+input ProfileImageUpdateArgs {
+  where: ProfileImageWhereUniqueInput!
+  data: ProfileImageUpdateInput!
+}
+
+input ProfileImageCreateInput {
+  profile: ProfileRelateToOneForCreateInput
+  title: String
+  source: Upload
+  altText: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+scalar JSON
+  @specifiedBy(
+    url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
+  )
 
 type Mutation {
   createUser(data: UserCreateInput!): User
@@ -424,9 +620,12 @@ type Mutation {
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
   createSettings(data: SettingsCreateInput!): Settings
   createManySettings(data: [SettingsCreateInput!]!): [Settings]
-  updateSettings(where: SettingsWhereUniqueInput! = {id: 1}, data: SettingsUpdateInput!): Settings
+  updateSettings(
+    where: SettingsWhereUniqueInput! = { id: 1 }
+    data: SettingsUpdateInput!
+  ): Settings
   updateManySettings(data: [SettingsUpdateArgs!]!): [Settings]
-  deleteSettings(where: SettingsWhereUniqueInput! = {id: 1}): Settings
+  deleteSettings(where: SettingsWhereUniqueInput! = { id: 1 }): Settings
   deleteManySettings(where: [SettingsWhereUniqueInput!]!): [Settings]
   createTheme(data: ThemeCreateInput!): Theme
   createThemes(data: [ThemeCreateInput!]!): [Theme]
@@ -440,12 +639,37 @@ type Mutation {
   updatePages(data: [PageUpdateArgs!]!): [Page]
   deletePage(where: PageWhereUniqueInput!): Page
   deletePages(where: [PageWhereUniqueInput!]!): [Page]
+  createProfile(data: ProfileCreateInput!): Profile
+  createProfiles(data: [ProfileCreateInput!]!): [Profile]
+  updateProfile(
+    where: ProfileWhereUniqueInput!
+    data: ProfileUpdateInput!
+  ): Profile
+  updateProfiles(data: [ProfileUpdateArgs!]!): [Profile]
+  deleteProfile(where: ProfileWhereUniqueInput!): Profile
+  deleteProfiles(where: [ProfileWhereUniqueInput!]!): [Profile]
+  createProfileImage(data: ProfileImageCreateInput!): ProfileImage
+  createProfileImages(data: [ProfileImageCreateInput!]!): [ProfileImage]
+  updateProfileImage(
+    where: ProfileImageWhereUniqueInput!
+    data: ProfileImageUpdateInput!
+  ): ProfileImage
+  updateProfileImages(data: [ProfileImageUpdateArgs!]!): [ProfileImage]
+  deleteProfileImage(where: ProfileImageWhereUniqueInput!): ProfileImage
+  deleteProfileImages(where: [ProfileImageWhereUniqueInput!]!): [ProfileImage]
   endSession: Boolean!
-  authenticateUserWithPassword(email: String!, recoveryPhrase: String!): UserAuthenticationWithPasswordResult
-  createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  authenticateUserWithPassword(
+    email: String!
+    recoveryPhrase: String!
+  ): UserAuthenticationWithPasswordResult
+  createInitialUser(
+    data: CreateInitialUserInput!
+  ): UserAuthenticationWithPasswordSuccess!
 }
 
-union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
+union UserAuthenticationWithPasswordResult =
+  | UserAuthenticationWithPasswordSuccess
+  | UserAuthenticationWithPasswordFailure
 
 type UserAuthenticationWithPasswordSuccess {
   sessionToken: String!
@@ -465,17 +689,59 @@ input CreateInitialUserInput {
 
 type Query {
   user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+    cursor: UserWhereUniqueInput
+  ): [User!]
   usersCount(where: UserWhereInput! = {}): Int
-  settings(where: SettingsWhereUniqueInput! = {id: 1}): Settings
-  manySettings(where: SettingsWhereInput! = {id: {equals: 1}}, orderBy: [SettingsOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SettingsWhereUniqueInput): [Settings!]
-  manySettingsCount(where: SettingsWhereInput! = {id: {equals: 1}}): Int
+  settings(where: SettingsWhereUniqueInput! = { id: 1 }): Settings
+  manySettings(
+    where: SettingsWhereInput! = { id: { equals: 1 } }
+    orderBy: [SettingsOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+    cursor: SettingsWhereUniqueInput
+  ): [Settings!]
+  manySettingsCount(where: SettingsWhereInput! = { id: { equals: 1 } }): Int
   theme(where: ThemeWhereUniqueInput!): Theme
-  themes(where: ThemeWhereInput! = {}, orderBy: [ThemeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ThemeWhereUniqueInput): [Theme!]
+  themes(
+    where: ThemeWhereInput! = {}
+    orderBy: [ThemeOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+    cursor: ThemeWhereUniqueInput
+  ): [Theme!]
   themesCount(where: ThemeWhereInput! = {}): Int
   page(where: PageWhereUniqueInput!): Page
-  pages(where: PageWhereInput! = {}, orderBy: [PageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PageWhereUniqueInput): [Page!]
+  pages(
+    where: PageWhereInput! = {}
+    orderBy: [PageOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+    cursor: PageWhereUniqueInput
+  ): [Page!]
   pagesCount(where: PageWhereInput! = {}): Int
+  profile(where: ProfileWhereUniqueInput!): Profile
+  profiles(
+    where: ProfileWhereInput! = {}
+    orderBy: [ProfileOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+    cursor: ProfileWhereUniqueInput
+  ): [Profile!]
+  profilesCount(where: ProfileWhereInput! = {}): Int
+  profileImage(where: ProfileImageWhereUniqueInput!): ProfileImage
+  profileImages(
+    where: ProfileImageWhereInput! = {}
+    orderBy: [ProfileImageOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+    cursor: ProfileImageWhereUniqueInput
+  ): [ProfileImage!]
+  profileImagesCount(where: ProfileImageWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

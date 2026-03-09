@@ -17,6 +17,16 @@ export interface SessionData {
     name: string
     email: string
     isAdmin: boolean
+    profile: {
+      nickname: string
+      description: string
+      location: string
+      image: {
+        source: {
+          publicUrl: string
+        }
+      }
+    }
   }
 }
 
@@ -82,12 +92,11 @@ export function authenticatedSession<Session extends SessionData>({
       )
 
       try {
-        const user = await keystoneContext
-          .withSession({ data: { isAdmin: true } })
-          .query.User.findOne({
-            where: { id: data?.itemId },
-            query: 'id name email isAdmin',
-          })
+        const user = await keystoneContext.sudo().query.User.findOne({
+          where: { id: data?.itemId },
+          query:
+            'id name email isAdmin profile { nickname description location image { source { publicUrl } } }',
+        })
 
         if (!user) {
           throw new Error('User not found')

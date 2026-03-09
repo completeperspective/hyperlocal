@@ -27,8 +27,10 @@ export const AuthenticatedHeader = ({
           name: sessionData?.name || '',
           email: sessionData?.email || '',
           isAdmin: sessionData?.isAdmin || false,
+          imageUrl: sessionData?.profile?.image?.source?.publicUrl || '',
         }}
         onLogout={handleLogout}
+        onProfileClick={() => router.push('/profile')}
       />
     </header>
   )

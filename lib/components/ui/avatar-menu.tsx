@@ -355,7 +355,7 @@ export function AvatarMenu({
   const isMobile = useIsMobile()
   const [open, setOpen] = React.useState(false)
   const router = useRouter()
-  console.log({ user })
+
   const menuItems: MenuItem[] = [
     { label: 'Dashboard', icon: Sun, onClick: () => router.push('/dashboard') },
     { label: 'Profile', icon: User, onClick: onProfileClick },
