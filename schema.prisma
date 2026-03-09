@@ -23,6 +23,7 @@ model Settings {
   id                 Int     @id
   siteName           String  @default("")
   baseUrl            String  @default("")
+  copyright          String  @default("")
   metaTitle          String  @default("")
   metaDescription    String  @default("")
   ogImage_id         String?

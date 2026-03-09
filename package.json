@@ -6,6 +6,7 @@
     "build": "pnpm keystone:build && pnpm next:build",
     "clean": "./scripts/clean.sh",
     "dev": "concurrently -k -p \"[{name}]\" -n \"data,web\" -c \"green,blue\" \"pnpm keystone:dev\" \"pnpm next:dev\"",
+    "db:seed": "tsx ./seed-data/index.ts",
     "db:generate": "keystone prisma generate",
     "db:studio": "keystone prisma studio",
     "format": "prettier --write .",
@@ -61,6 +62,7 @@
     "sass": "^1.97.3",
     "slate": "0.123.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   },
   "engines": {

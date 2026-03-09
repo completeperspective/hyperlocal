@@ -30,7 +30,7 @@ export const lists = {
       // Identity
       siteName: text({ label: 'Site Name' }),
       baseUrl: text({ label: 'Canonical Base URL' }),
-
+      copyright: text({ label: 'Footer notes' }),
       // SEO
       metaTitle: text({ label: 'Default Meta Title' }),
       metaDescription: text({ label: 'Default Meta Description' }),

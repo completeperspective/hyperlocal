@@ -1,11 +1,13 @@
 import { Metadata } from 'next'
+import { AppSettings } from '@/server/helpers'
 import { getPageMetadata } from '@/server/helpers/get-metadata'
 
 export async function generateMetadata(): Promise<Metadata> {
   return await getPageMetadata('Admin')
 }
 
-export default function AdminPage() {
+export default async function AdminPage() {
+  const appSettings = await AppSettings.instance.settings()
   return (
     <div className="gap-16 p-8 pb-20 sm:p-20 grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center font-[family-name:var(--font-geist-sans)]">
       <main className="gap-4 sm:items-start row-start-2 flex flex-col items-center">
@@ -18,7 +20,7 @@ export default function AdminPage() {
       </main>
       <footer className="gap-6 row-start-3 flex flex-wrap items-center justify-center">
         <p className="text-xs text-gray-400">
-          - created with ♥ by complete perspective -
+          {appSettings?.isPrivate ? '' : appSettings?.copyright}
         </p>
       </footer>
     </div>

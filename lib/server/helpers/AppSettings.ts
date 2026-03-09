@@ -39,7 +39,8 @@ export class AppSettings {
         # Identity
         siteName
         baseUrl
-
+        copyright
+        
         # SEO
         metaTitle
         metaDescription

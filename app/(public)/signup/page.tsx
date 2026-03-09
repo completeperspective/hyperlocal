@@ -24,7 +24,7 @@ export default async function SignUp() {
       </main>
       <footer className="gap-6 row-start-3 flex flex-wrap items-center justify-center">
         <p className="text-xs text-gray-400">
-          - created with ♥ by complete perspective -
+          {appSettings?.isPrivate ? '' : appSettings?.copyright}
         </p>
       </footer>
     </div>
