@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "types": ["vitest/globals"],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "~/*": ["./*"],
+      "@/actions": ["./lib/server/actions"],
+      "@/actions/*": ["./lib/server/actions/*"],
+      "@/components": ["./lib/components"],
+      "@/components/*": ["./lib/components/*"],
+      "@/layouts": ["./lib/components/layouts"],
+      "@/layouts/*": ["./lib/components/layouts/*"],
+      "@/server": ["./lib/server"],
+      "@/server/*": ["./lib/server/*"],
+      "@/types": ["./lib/types"],
+      "@/types/*": ["./lib/types/*"],
+      "@/ui": ["./lib/components/ui"],
+      "@/ui/*": ["./lib/components/ui/*"],
+      "@/utils": ["./lib/utils"],
+      "@/utils/*": ["./lib/utils/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}

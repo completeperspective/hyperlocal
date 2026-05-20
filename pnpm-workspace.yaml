@@ -1,0 +1,11 @@
+ignoredBuiltDependencies:
+  - '@apollo/protobufjs'
+  - '@parcel/watcher'
+  - esbuild
+  - sharp
+  - unrs-resolver
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - prisma
+  - '@reown/appkit'

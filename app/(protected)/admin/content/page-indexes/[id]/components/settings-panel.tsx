@@ -1,0 +1,228 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import type { PageIndexData } from '@/types/page-index'
+import { Button } from '@/ui/button'
+import { Input } from '@/ui/input'
+import { Label } from '@/ui/label'
+import { ThemeSelector, type ThemeSummary } from '@/ui/theme-selector'
+import { UrlPreviewBar } from '../../../../page-indexes/components/url-preview-bar'
+
+interface SettingsPanelProps {
+  indexId: string
+  initialData: Pick<PageIndexData, 'title' | 'slug' | 'basePath' | 'status'>
+  themes: ThemeSummary[]
+  initialThemeId: string | null
+  onThemeChange?: (id: string | null) => void
+}
+
+type Status = 'draft' | 'private' | 'membership' | 'published'
+
+interface SettingsForm {
+  title: string
+  slug: string
+  basePath: string
+  status: Status
+  themeId: string | null
+}
+
+function toSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
+export function SettingsPanel({
+  indexId,
+  initialData,
+  themes,
+  initialThemeId,
+  onThemeChange,
+}: SettingsPanelProps) {
+  const [form, setForm] = useState<SettingsForm>({
+    title: initialData.title,
+    slug: initialData.slug,
+    basePath: initialData.basePath,
+    status: initialData.status as Status,
+    themeId: initialThemeId,
+  })
+  const [slugTouched, setSlugTouched] = useState(true)
+  const [pathValid, setPathValid] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // Sync if parent re-renders with fresh data
+  useEffect(() => {
+    setForm({
+      title: initialData.title,
+      slug: initialData.slug,
+      basePath: initialData.basePath,
+      status: initialData.status as Status,
+      themeId: initialThemeId,
+    })
+  }, [
+    initialData.title,
+    initialData.slug,
+    initialData.basePath,
+    initialData.status,
+    initialThemeId,
+  ])
+
+  function handleTitleChange(title: string) {
+    setForm((prev) => ({
+      ...prev,
+      title,
+      slug: slugTouched ? prev.slug : toSlug(title),
+    }))
+  }
+
+  function handleSlugChange(slug: string) {
+    setSlugTouched(true)
+    setForm((prev) => ({
+      ...prev,
+      slug: slug.toLowerCase().replace(/[^a-z0-9-]/g, ''),
+    }))
+  }
+
+  const slugError =
+    form.slug && !/^[a-z0-9-]+$/.test(form.slug)
+      ? 'Slug must be lowercase letters, numbers, and hyphens only'
+      : null
+
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault()
+    if (!pathValid || !!slugError) return
+    setSaving(true)
+    setSaved(false)
+    setError(null)
+    try {
+      const res = await fetch(`/api/v1/admin/page-indexes/${indexId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: form.title,
+          slug: form.slug,
+          basePath: form.basePath,
+          status: form.status,
+          themeId: form.themeId,
+        }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error((data as { message?: string }).message ?? 'Save failed')
+      }
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Save failed')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSave} className="space-y-5">
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="s-title">Title</Label>
+        <Input
+          id="s-title"
+          value={form.title}
+          onChange={(e) => handleTitleChange(e.target.value)}
+          required
+          placeholder="e.g. Developer Docs"
+        />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="s-slug">Slug</Label>
+        <Input
+          id="s-slug"
+          value={form.slug}
+          onChange={(e) => handleSlugChange(e.target.value)}
+          required
+          placeholder="e.g. developer-docs"
+          className="font-mono text-sm"
+          aria-invalid={!!slugError || undefined}
+        />
+        {slugError && <p className="text-xs text-destructive">{slugError}</p>}
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="s-basepath">
+          Base Path{' '}
+          <span className="text-muted-foreground font-normal">(optional)</span>
+        </Label>
+        <Input
+          id="s-basepath"
+          value={form.basePath}
+          onChange={(e) =>
+            setForm((prev) => ({
+              ...prev,
+              basePath: e.target.value
+                .toLowerCase()
+                .replace(/^\//, '')
+                .replace(/\/$/, ''),
+            }))
+          }
+          placeholder="e.g. docs/v2"
+          className="font-mono text-sm"
+        />
+        <p className="text-xs text-muted-foreground">
+          Leave empty to publish at{' '}
+          <code className="font-mono">/{form.slug || 'slug'}</code>
+        </p>
+      </div>
+
+      <UrlPreviewBar
+        basePath={form.basePath}
+        slug={form.slug}
+        excludeId={indexId}
+        onValidationChange={setPathValid}
+      />
+
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="s-status">Status</Label>
+        <select
+          id="s-status"
+          value={form.status}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, status: e.target.value as Status }))
+          }
+          className="h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        >
+          <option value="draft">Draft</option>
+          <option value="private">Private</option>
+          <option value="membership">Membership</option>
+          <option value="published">Published</option>
+        </select>
+      </div>
+
+      <ThemeSelector
+        themes={themes}
+        value={form.themeId}
+        onChange={(themeId) => {
+          setForm((prev) => ({ ...prev, themeId }))
+          onThemeChange?.(themeId)
+        }}
+        entityId={indexId}
+      />
+
+      {error && (
+        <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {error}
+        </p>
+      )}
+
+      <div className="flex items-center gap-3">
+        <Button type="submit" disabled={saving || !pathValid || !!slugError}>
+          {saving ? 'Saving…' : 'Save Settings'}
+        </Button>
+        {saved && <span className="text-sm text-green-600">Saved</span>}
+      </div>
+    </form>
+  )
+}
