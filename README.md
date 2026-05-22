@@ -14,7 +14,7 @@ An open source community engagement platform. More BBS than social media network
 
 ## What it is
 
-hyperlocal is a self-hosted, open source community platform for small-to-medium groups — the kind of space that's more forum than feed. It ships the full stack in a single Next.js + KeystoneJS process: CMS-driven pages, course content, tiered memberships, Stripe and on-chain crypto payments, Cloudinary media management, and Web3 wallet authentication. The current release (0.5.x) covers content and membership infrastructure. v1.0 will layer in community features — threaded posts, member directory, direct messaging, and notifications.
+hyperlocal is a self-hosted, open source community engagement platform — the kind of space that's built for connecting members, and knowledge sharing. It ships the full stack in a single Next.js + KeystoneJS process: CMS-driven pages, course content, tiered memberships, Stripe and on-chain crypto payments, Cloudinary media management, and Web3 wallet authentication. The current release (0.5.x) covers content and membership infrastructure. v1.0 will layer in community features — threaded posts, member directory, direct messaging, and notifications.
 
 ---
 
